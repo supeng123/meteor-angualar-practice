@@ -1,32 +1,26 @@
-import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
-import { AppComponent } from "./app.component";
-import { DemoComponent } from "./demo/demo.component";
-import { DemoDataService } from "./demo/demo-data.service";
+/**
+ * Created by supeng on 2017/4/8.
+ */
+import { NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+
+import{ AppComponent} from './app.component';
+import { PARTIES_DECLARATIONS } from './parties';
 
 @NgModule({
-  // Components, Pipes, Directive
-  declarations: [
-    AppComponent,
-    DemoComponent
-  ],
-  // Entry Components
-  entryComponents: [
-    AppComponent
-  ],
-  // Providers
-  providers: [
-    DemoDataService
-  ],
-  // Modules
-  imports: [
-    BrowserModule
-  ],
-  // Main Component
-  bootstrap: [ AppComponent ]
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule
+    ],
+    declarations: [
+        AppComponent,
+        PARTIES_DECLARATIONS.PartiesFormComponent
+    ],
+    bootstrap: [
+        AppComponent
+    ]
 })
-export class AppModule {
-  constructor() {
 
-  }
-}
+export class AppModule {}

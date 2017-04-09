@@ -1,4 +1,9 @@
-import { Main } from "./imports/server-main/main";
+/**
+ * Created by supeng on 2017/4/8.
+ */
+import { Meteor} from 'meteor/meteor';
+import {loadParties} from './imports/fixtures/parties'
 
-const mainInstance = new Main();
-mainInstance.start();
+Meteor.startup( () => {
+    loadParties();
+});
