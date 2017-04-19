@@ -2,18 +2,25 @@
  * Created by supeng on 2017/4/12.
  */
 import {Meteor} from 'meteor/meteor';
+import { Counts } from 'meteor/tmeasday:publish-counts';
 import {Parties} from '../../../both/collections/parties.collection';
 
+interface Options {
+    [key: string]: any;
+}
 
-Meteor.publish('parties', function() {
-    return Parties.find(buildQuery.call(this));
+Meteor.publish('parties', function(options: Options, location?: string) {
+    const selector = buildQuery.call(this, null, location);
+    Counts.publish(this, 'numberOfParties', Parties.collection.find(buildQuery.call(this)), {noReady: true});
+
+    return Parties.find(selector, options);
 });
 
 Meteor.publish('party', function(partyId: string) {
     return Parties.find(buildQuery.call(this, partyId));
 });
 
-function buildQuery(partyId?: string): Object {
+function buildQuery(partyId?: string, location?: string): Object {
     const isAvailable = {
         $or: [{
             // party is public
@@ -32,11 +39,13 @@ function buildQuery(partyId?: string): Object {
             }]
     };
 
+    const searchRegEx = { '$regex': '.*' + (location || '') + '.*', '$options': 'i' };
+
     if (partyId) {
         return {
             // only single party
             $and: [{
-                _id: partyId
+                location: searchRegEx
             },
                 isAvailable
             ]
